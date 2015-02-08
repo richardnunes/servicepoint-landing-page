@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Service Point - Customers ordering from the air</title>
+
+        <link rel="shortcut icon" href="favicon.html" type="image/x-icon" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Stylesheet /-->
+        <link rel="stylesheet" href="assets/css/bootstrap.css">
+        <link  rel="stylesheet" href="assets/css/font-awesome.css">
+        <!--[if IE 7]>
+        <link rel="stylesheet" href="assets/css/font-awesome-ie7.css">
+        <![endif]-->
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/style-responsive.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/jquery.fancybox.css" media="all" />
+
+        <script src="assets/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+        <script src="assets/js/modernizr.custom.js" type="text/javascript" ></script>
+        <script src="assets/js/jquery.scrollto.js"></script>
+        <script src="assets/js/waypoints.min.js" type="text/javascript"></script>
+        <script src="assets/js/jquery.tweet.js" type="text/javascript"></script>
+        <script src="assets/js/custom.js" type="text/javascript"></script>
+        <script src="assets/js/jquery.flexslider.js"></script>
+        <script src="assets/js/jquery.fancybox.pack.js" type="text/javascript" ></script>
+        <script src="assets/js/jquery.fancybox-mediae209.js?v=1.0.0" type="text/javascript"></script>
+        <script src="assets/js/retina.js"></script>
+        <script src="assets/js/gen_validatorv31.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+
+
+        <script>
+            var plan = null;
+            var payment = null;
+            function form_submit(form){
+
+                var data = $(form).serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "contact-form-handler.php",
+                    data: data,
+                    success: function(d, x, y){
+                        if (d == "success"){
+                            var mail_value = document.getElementById('second_mail').value;
+                            $(".contactform").fadeOut(500, function() { $(this).remove(); });
+                            setTimeout(function() {
+                                setTimeout(function(){
+                                    window.location = "#contacto";
+                                },750);
+                                $("<div class='thank-you'>Obrigado pelo seu registo. Dentro de 24h receberá um email para "+mail_value+" com os seus dados de login</div>").hide().appendTo(".form-submission").fadeIn(1000);
+                            }, 600);
+                        }
+                    }
+                });
+            }
+
+            function select_plan(plan_element){
+                if(!plan_element.value) return;
+                plan = plan_element.value;
+                plan_element = plan_element.parentNode;
+
+                var plans = document.getElementsByClassName('plan');
+                for(var i=0; i<plans.length; i++){
+                    $(plans[i]).removeClass('plan_selected');
+                }
+
+                $(plan_element).addClass("plan_selected");
+            }
+
+            function select_payment(payment_element){
+                if(!payment_element.value) return;
+                payment = payment_element.value;
+
+                var payments = document.getElementsByClassName('payment');
+                console.log(payments);
+                for(var i=0; i<payments.length; i++){
+                    $(payments[i]).removeClass('payment_selected');
+                }
+
+                $(payment_element).addClass("payment_selected");
+            }
+        </script>
+
+    </head>
+    <body>
+
+    <div style="height: 75px">
+        <img style="padding: 3px; float: left;" src="assets/img/logo_small.png">
+        <h1 style="text-align: center"> Pagamento do ServicePoint</h1>
+    </div>
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 centered">
+                        <h2>Seleccione o plano</h2>
+                        <div> Subscrição anual (Acresce o IVA à taxa legal em vigor)</div>
+                        <div class="breaker"></div>
+                    </div>
+                </div>
+                <div id="plans" class="row">
+                    <div class="col-md-2 plan">
+                        <div> Rest </div>
+                        <div> 1 Menu </div>
+                        <div> 30 Pontos </div>
+                        <div> 1 Recetor </div>
+                        <button onclick="js:select_plan(this)" value="Rest" class="btn btn-warning"> 180€ </button>
+                    </div>
+                    <div class="col-md-2 plan">
+                        <div> Basic </div>
+                        <div> 2 Menu </div>
+                        <div> 50 Pontos </div>
+                        <div> 2 Recetores </div>
+                        <button onclick="js:select_plan(this)" value="Basic" class="btn btn-warning"> 700€ </button>
+                    </div>
+                    <div class="col-md-2 plan">
+                        <div> Plus </div>
+                        <div> 3 Menus </div>
+                        <div> 200 Pontos </div>
+                        <div> 5 Recetores </div>
+                        <button onclick="js:select_plan(this)" value="Plus" class="btn btn-warning"> 1000€ </button>
+                    </div>
+                    <div class="col-md-2 plan">
+                        <div> Advance </div>
+                        <div> 15 Menu </div>
+                        <div> 1000 Pontos </div>
+                        <div> 15 Recetores </div>
+                        <button onclick="js:select_plan(this)" value="Advance" class="btn btn-warning"> 1500€ </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 centered">
+                        <h3 style="color: #000000">Método de pagamento:</h3>
+                        <div class="breaker"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div onclick="js:select_payment(this)" value="paypal" class="col-md-2 payment">
+                        <img alt="paypal" style="width: 60px; height: 60px" src="assets/img/pagamento/paypal.png">
+                        <div>Paypal</div>
+                    </div>
+                    <div onclick="js:select_payment(this)" value="cc" class="col-md-2 payment">
+                        <img alt="Cartão de crédito" style="width: 60px; height: 60px"  src="assets/img/pagamento/cc.png">
+                        <div>Cartão de crédito</div>
+                    </div>
+                    <div onclick="js:select_payment(this)" value="tb" class="col-md-2 payment">
+                        <img alt="Transferência bancária" style="width: 60px; height: 60px"  src="assets/img/pagamento/tb.png">
+                        <div>Transferência Bancária</div>
+                    </div>
+                    <div onclick="js:select_payment(this)" value="mb" class="col-md-2 payment">
+                        <img alt="Multibanco" style="width: 60px; height: 60px"  src="assets/img/pagamento/mb.gif">
+                        <div>Multibanco</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- CONTACT SECTION  -->
+        <section id="contacto">
+            <div class="container" style="padding: 40px 0;">
+                <div class="row">
+                    <div class="col-md-12 centered">
+                        <p class="subtittle" > Preencha os seguintes campos </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 form-submission">
+                        <form class="contactform" name="registerform" action="payment-form-handler.php" method="POST">
+                            <input type="text" name="name" placeholder="Empresa (Nome para facturação)">
+                            <input type="text" name="nif" placeholder="NIF">
+                            <input type="text" name="address" placeholder="Morada para Facturação">
+                            <input type="text" name="postal-code" placeholder="Código postal">
+                            <input type="text" name="city" placeholder="Cidade">
+                            <select name="country">
+                                <option value="" disabled selected="selected"> País </option>
+                                <option value="Restaurante">Portugal</option>
+                            </select>
+                            <input type="text" name="phone" placeholder="Telefone">
+                            <button onclick="js:form_submit(this.parentNode)" name="send" type="button" class="button">Checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END CONTACT SECTION  -->
+
+        <footer>
+            <!-- SOCIAL MODULE  -->
+            <section id="social_module">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul style="padding: 0;">
+                                <li><a href="https://www.facebook.com/servicepoint.sp" target=_blank><i class="fa fa-facebook fa-2x"></i></a></li>
+                                <li><a href="https://twitter.com/service_sp" target=_blank><i class="fa fa-twitter fa-2x"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END SOCIAL MODULE  -->
+
+            <!-- COPYRIGHT  -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 center">
+                        <img alt="YOURLOGO" src="assets/img/logo_footer.png" style="height: 35px;">
+                    </div>
+                    <div class="col-md-6">
+                        <p class="copyright text-right center">&copy; 2014 Service Point </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- END HEADER HOME  -->
+
+        <script language="JavaScript">
+            //$("form").submit(function() { return false; });
+            // Code for validating the form
+            // Visit http://www.javascript-coder.com/html-form/javascript-form-validation.phtml
+            // for details
+            var frmvalidator  = new Validator("registerform");
+            frmvalidator.addValidation("name","req","Por favor introduza o nome do responsável");
+        </script>
+        <!--
+        Sample code from:
+        http://www.html-form-guide.com/contact-form/php-email-contact-form.html
+        -->
+        <!-- END JAVA SCRIPTS  -->
+
+
+    </body>
+</html>
